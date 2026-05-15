@@ -7,6 +7,10 @@ declare(strict_types=1);
 
 namespace Actra\Smtp\Core;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use Actra\Smtp\Admin\Settings;
 
 /**

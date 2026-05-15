@@ -2,9 +2,9 @@
 Contributors: actra-ag
 Tags: smtp, mail, email, phpmailer, delivery
 Requires at least: 6.3
-Tested up to: 6.9.4
+Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 1.0.0
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -41,5 +41,5 @@ You should only have one SMTP plugin active at a time to avoid conflicts.
 
 == Changelog ==
 
-= 1.0.0 =
+= 1.0.2 =
 * Initial release.

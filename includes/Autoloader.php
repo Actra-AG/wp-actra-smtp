@@ -7,6 +7,10 @@ declare(strict_types=1);
 
 namespace Actra\Smtp;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Minimal PSR-4 Autoloader.
  */

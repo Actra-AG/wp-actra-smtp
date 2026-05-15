@@ -9,6 +9,10 @@ declare(strict_types=1);
 
 namespace Actra\Smtp\Admin;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Handles the Admin Settings page.
  */
