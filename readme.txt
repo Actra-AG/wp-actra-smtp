@@ -23,7 +23,7 @@ Actra SMTP is built for developers who prioritize clean code and performance. It
 
 == Installation ==
 
-1. Upload the wp-actra-smtp folder to the /wp-content/plugins/ directory.
+1. Upload the actra-smtp folder to the /wp-content/plugins/ directory.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
 3. Configure your SMTP settings under Settings > Actra SMTP.
 
