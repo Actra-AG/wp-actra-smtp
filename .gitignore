@@ -1,0 +1,12 @@
+# Ignore everything by default
+/*
+
+# Allow directories
+!/assets/
+!/includes/
+
+# Allow specific files
+!/.gitignore
+!/LICENSE
+!/README.md
+!/wp-actra-smtp.php
