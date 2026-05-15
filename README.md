@@ -13,7 +13,7 @@ Actra SMTP is built for developers who prioritize clean code and performance. It
 ### Key Features
 
 - **Zero External Dependencies**: No Composer, no vendor folders, no external libraries.
-- **Modern PHP**: Written for PHP 8.0+ utilizing named arguments and strict typing.
+- **Modern PHP**: Written for PHP 8.0+ using named arguments and strict typing.
 - **Minimal OOP Footprint**: Lightweight PSR-4 autoloader and a singleton-based core.
 - **Developer Friendly**: Cleanly namespaced and easy to extend.
 

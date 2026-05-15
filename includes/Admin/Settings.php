@@ -58,7 +58,18 @@ class Settings
         );
 
         foreach ($fields as $id => $args) {
-            register_setting(option_group: Settings::GROUP, option_name: $id);
+            $sanitize_callback = 'sanitize_text_field';
+            if ('email' === $args['type']) {
+                $sanitize_callback = 'sanitize_email';
+            } elseif ('number' === $args['type']) {
+                $sanitize_callback = 'absint';
+            }
+
+            register_setting(
+                option_group: Settings::GROUP,
+                option_name: $id,
+                args: ['sanitize_callback' => $sanitize_callback]
+            );
             add_settings_field(
                 id: $id,
                 title: $args['label'],

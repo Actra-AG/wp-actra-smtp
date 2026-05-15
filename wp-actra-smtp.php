@@ -5,7 +5,8 @@
  * Version:     1.0.0
  * Author:      Actra AG
  * Author URI:  https://www.actra.ch
- * License:     MIT
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ * License:     GPLv2 or later
  * Text Domain: actra-smtp
  * @package     ActraSmtp
  */
