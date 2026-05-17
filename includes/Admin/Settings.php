@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace Actra\Smtp\Admin;
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+if (!defined('ABSPATH')) {
+    exit;
 }
 
 /**
@@ -62,17 +62,31 @@ class Settings
         );
 
         foreach ($fields as $id => $args) {
-            $sanitize_callback = 'sanitize_text_field';
-            if ('email' === $args['type']) {
-                $sanitize_callback = 'sanitize_email';
-            } elseif ('number' === $args['type']) {
-                $sanitize_callback = 'absint';
+            switch ($args['type']) {
+                case 'email':
+                    $type = 'string';
+                    $sanitize_callback = 'sanitize_email';
+                    break;
+                case 'number':
+                    $type = 'integer';
+                    $sanitize_callback = 'absint';
+                    break;
+                case 'password':
+                    $type = 'string';
+                    $sanitize_callback = [$this, 'sanitize_password'];
+                    break;
+                default:
+                    $type = 'string';
+                    $sanitize_callback = 'sanitize_text_field';
+                    break;
             }
-
             register_setting(
                 option_group: Settings::GROUP,
                 option_name: $id,
-                args: ['sanitize_callback' => $sanitize_callback]
+                args: [
+                    'type' => $type,
+                    'sanitize_callback' => $sanitize_callback,
+                ]
             );
             add_settings_field(
                 id: $id,
@@ -83,6 +97,14 @@ class Settings
                 args: array_merge(['id' => $id], $args)
             );
         }
+    }
+
+    /**
+     * Pass-through sanitization for passwords to prevent stripping special characters.
+     */
+    public function sanitize_password(string $value): string
+    {
+        return trim(string: $value);
     }
 
     public function render_field(array $args): void

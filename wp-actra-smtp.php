@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Actra SMTP
  * Description: A minimal, object-oriented SMTP plugin for WordPress.
- * Version:     1.0.2
+ * Version:     1.0.3
  * Author:      Actra AG
  * Author URI:  https://www.actra.ch
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -17,7 +17,7 @@ if ( ! defined( constant_name: 'ABSPATH' ) ) {
 	exit;
 }
 
-define( constant_name: 'ACTRA_SMTP_VERSION', value: '1.0.2' );
+define( constant_name: 'ACTRA_SMTP_VERSION', value: '1.0.3' );
 define( constant_name: 'ACTRA_SMTP_PATH', value: plugin_dir_path( file: __FILE__ ) );
 define( constant_name: 'ACTRA_SMTP_URL', value: plugin_dir_url( file: __FILE__ ) );
 

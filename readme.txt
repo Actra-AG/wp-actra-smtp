@@ -1,10 +1,10 @@
 === Actra SMTP ===
-Contributors: actra-ag
+Contributors: jayq1982
 Tags: smtp, mail, email, phpmailer, delivery
 Requires at least: 6.3
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -40,6 +40,10 @@ You should only have one SMTP plugin active at a time to avoid conflicts.
 1. The Actra SMTP settings page shows connection fields for SMTP hostname, port, and credentials.
 
 == Changelog ==
+
+= 1.0.3 =
+* Address reviewer feedback regarding sanitization, contributors, and directory assets.
+* Implement custom sanitization for password fields to preserve special characters.
 
 = 1.0.2 =
 * Initial release.
