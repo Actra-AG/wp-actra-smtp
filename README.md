@@ -12,6 +12,9 @@ Actra SMTP is built for developers who prioritize clean code and performance. It
 
 ### Key Features
 
+#### Smart Defaults
+The plugin defaults to port 587, the industry standard for secure SMTP, making it "plug-and-play" for most modern hosting environments.
+
 - **Zero External Dependencies**: No Composer, no vendor folders, no external libraries.
 - **Modern PHP**: Written for PHP 8.0+ using named arguments and strict typing.
 - **Minimal OOP Footprint**: Lightweight PSR-4 autoloader and a singleton-based core.

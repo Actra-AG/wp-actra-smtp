@@ -42,14 +42,37 @@ class Settings
     public function register_settings(): void
     {
         $fields = [
-            'actra-smtp_sender_email' => ['label' => 'From-Email', 'type' => 'email'],
-            'actra-smtp_hostname' => ['label' => 'SMTP-Hostname', 'type' => 'text'],
-            'actra-smtp_username' => ['label' => 'SMTP-Username', 'type' => 'text'],
-            'actra-smtp_password' => ['label' => 'SMTP-Password', 'type' => 'password'],
-            'actra-smtp_port' => ['label' => 'SMTP-Port', 'type' => 'number'],
-            'actra-smtp_tls' => [
-                'label' => 'SMTP-TLS',
-                'type' => 'select',
+            'actra-smtp_sender_email' => [
+                'label'       => 'From-Email',
+                'type'        => 'email',
+                'required'    => true,
+                'placeholder' => 'you@example.com'
+            ],
+            'actra-smtp_hostname'     => [
+                'label'       => 'SMTP-Hostname',
+                'type'        => 'text',
+                'required'    => true,
+                'placeholder' => 'smtp.example.com or localhost'
+            ],
+            'actra-smtp_username'     => [
+                'label'       => 'SMTP-Username',
+                'type'        => 'text',
+                'description' => 'Leave empty if your SMTP server does not require authentication.'
+            ],
+            'actra-smtp_password'     => [
+                'label'       => 'SMTP-Password',
+                'type'        => 'password',
+                'description' => 'Leave empty if your SMTP server does not require authentication.'
+            ],
+            'actra-smtp_port'         => [
+                'label'    => 'SMTP-Port',
+                'type'     => 'number',
+                'required' => true,
+                'default'  => 587
+            ],
+            'actra-smtp_tls'          => [
+                'label'   => 'SMTP-TLS',
+                'type'    => 'select',
                 'options' => ['yes' => 'Yes', 'no' => 'No']
             ],
         ];
@@ -84,8 +107,9 @@ class Settings
                 option_group: Settings::GROUP,
                 option_name: $id,
                 args: [
-                    'type' => $type,
+                    'type'              => $type,
                     'sanitize_callback' => $sanitize_callback,
+                    'default'           => $args['default'] ?? '',
                 ]
             );
             add_settings_field(
@@ -109,7 +133,7 @@ class Settings
 
     public function render_field(array $args): void
     {
-        $value = get_option(option: $args['id'], default_value: '');
+        $value = get_option(option: $args['id'], default_value: $args['default'] ?? '');
 
         if ('select' === $args['type']) {
             echo '<select name="' . esc_attr(text: $args['id']) . '" class="postform">';
@@ -121,15 +145,20 @@ class Settings
                     ) . '>' . esc_html(text: $label) . '</option>';
             }
             echo '</select>';
-            return;
+        } else {
+            printf(
+                '<input type="%1$s" name="%2$s" value="%3$s" class="regular-text"%4$s%5$s>',
+                esc_attr(text: $args['type']),
+                esc_attr(text: $args['id']),
+                esc_attr(text: $value),
+                !empty($args['required']) ? ' required' : '',
+                !empty($args['placeholder']) ? ' placeholder="' . esc_attr(text: $args['placeholder']) . '"' : ''
+            );
         }
 
-        printf(
-            '<input type="%1$s" name="%2$s" value="%3$s" class="regular-text">',
-            esc_attr(text: $args['type']),
-            esc_attr(text: $args['id']),
-            esc_attr(text: $value)
-        );
+        if (!empty($args['description'])) {
+            printf('<p class="description">%s</p>', esc_html(text: $args['description']));
+        }
     }
 
     public function render_settings_page(): void
