@@ -2,30 +2,23 @@
 Contributors: jayq1982
 Tags: smtp, mail, email, phpmailer, delivery
 Requires at least: 6.3
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 8.0
-Stable tag: 1.0.4
+Stable tag: 1.0.5
 License: GPLv2 or later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
+License URI: https://www.gnu.org/licenses/GPL-2.0.html
 
 A minimal, object-oriented SMTP plugin for WordPress with zero external dependencies.
 
 == Description ==
 
-Actra SMTP is built for developers who prioritize clean code and performance. It bridges the gap between WordPress's core mailing functionality and your SMTP provider without the bloat of traditional SMTP plugins.
-
-=== Key Features ===
-
-*   **Zero External Dependencies**: No Composer, no vendor folders, no external libraries.
-*   **Modern PHP**: Written for PHP 8.0+ using named arguments and strict typing.
-*   **Minimal OOP Footprint**: Lightweight PSR-4 autoloader and a singleton-based core.
-*   **Developer Friendly**: Cleanly namespaced and easy to extend.
+Actra SMTP is designed for simplicity and performance. It uses the native PHPMailer library included in WordPress core to route all emails through your preferred SMTP server.
 
 == Installation ==
 
 1. Upload the actra-smtp folder to the /wp-content/plugins/ directory.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
-3. Configure your SMTP settings under Settings > Actra SMTP.
+3. Configure your SMTP settings under 'Settings > Actra SMTP'.
 
 == Frequently Asked Questions ==
 
@@ -41,9 +34,12 @@ You should only have one SMTP plugin active at a time to avoid conflicts.
 
 == Changelog ==
 
+= 1.0.5 =
+* Revert custom password sanitization to ensure valid passwords remain unchanged.
+
 = 1.0.4 =
-* Address reviewer feedback regarding sanitization, contributors, and directory assets.
-* Implement custom sanitization for password fields to preserve special characters.
+* Refactor sanitization and general code structure.
+* Implement custom sanitization for password fields.
 
 = 1.0.2 =
 * Initial release.

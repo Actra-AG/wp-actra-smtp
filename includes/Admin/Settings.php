@@ -43,36 +43,36 @@ class Settings
     {
         $fields = [
             'actra-smtp_sender_email' => [
-                'label'       => 'From-Email',
-                'type'        => 'email',
-                'required'    => true,
+                'label' => 'From-Email',
+                'type' => 'email',
+                'required' => true,
                 'placeholder' => 'you@example.com'
             ],
-            'actra-smtp_hostname'     => [
-                'label'       => 'SMTP-Hostname',
-                'type'        => 'text',
-                'required'    => true,
+            'actra-smtp_hostname' => [
+                'label' => 'SMTP-Hostname',
+                'type' => 'text',
+                'required' => true,
                 'placeholder' => 'smtp.example.com or localhost'
             ],
-            'actra-smtp_username'     => [
-                'label'       => 'SMTP-Username',
-                'type'        => 'text',
+            'actra-smtp_username' => [
+                'label' => 'SMTP-Username',
+                'type' => 'text',
                 'description' => 'Leave empty if your SMTP server does not require authentication.'
             ],
-            'actra-smtp_password'     => [
-                'label'       => 'SMTP-Password',
-                'type'        => 'password',
+            'actra-smtp_password' => [
+                'label' => 'SMTP-Password',
+                'type' => 'password',
                 'description' => 'Leave empty if your SMTP server does not require authentication.'
             ],
-            'actra-smtp_port'         => [
-                'label'    => 'SMTP-Port',
-                'type'     => 'number',
+            'actra-smtp_port' => [
+                'label' => 'SMTP-Port',
+                'type' => 'number',
                 'required' => true,
-                'default'  => 587
+                'default' => 587
             ],
-            'actra-smtp_tls'          => [
-                'label'   => 'SMTP-TLS',
-                'type'    => 'select',
+            'actra-smtp_tls' => [
+                'label' => 'SMTP-TLS',
+                'type' => 'select',
                 'options' => ['yes' => 'Yes', 'no' => 'No']
             ],
         ];
@@ -85,33 +85,32 @@ class Settings
         );
 
         foreach ($fields as $id => $args) {
+            $register_args = [
+                'type' => 'string',
+                'default' => $args['default'] ?? '',
+            ];
             switch ($args['type']) {
                 case 'email':
-                    $type = 'string';
-                    $sanitize_callback = 'sanitize_email';
+                    $register_args['sanitize_callback'] = 'sanitize_email';
                     break;
                 case 'number':
-                    $type = 'integer';
-                    $sanitize_callback = 'absint';
+                    $register_args['type'] = 'integer';
+                    $register_args['sanitize_callback'] = 'absint';
                     break;
                 case 'password':
-                    $type = 'string';
-                    $sanitize_callback = [$this, 'sanitize_password'];
+                    // Pass-through to not change a valid password.
                     break;
                 default:
-                    $type = 'string';
-                    $sanitize_callback = 'sanitize_text_field';
+                    $register_args['sanitize_callback'] = 'sanitize_text_field';
                     break;
             }
+
             register_setting(
                 option_group: Settings::GROUP,
                 option_name: $id,
-                args: [
-                    'type'              => $type,
-                    'sanitize_callback' => $sanitize_callback,
-                    'default'           => $args['default'] ?? '',
-                ]
+                args: $register_args
             );
+
             add_settings_field(
                 id: $id,
                 title: $args['label'],
@@ -121,14 +120,6 @@ class Settings
                 args: array_merge(['id' => $id], $args)
             );
         }
-    }
-
-    /**
-     * Pass-through sanitization for passwords to prevent stripping special characters.
-     */
-    public function sanitize_password(string $value): string
-    {
-        return trim(string: $value);
     }
 
     public function render_field(array $args): void
