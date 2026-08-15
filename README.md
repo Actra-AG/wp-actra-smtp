@@ -81,6 +81,17 @@ define('ACTRA_SMTP_USERNAME', '');
 define('ACTRA_SMTP_PASSWORD', '');
 ```
 
+### Multisite behavior
+
+In WordPress multisite installations, all sites share the same `wp-config.php` file. Therefore, any `ACTRA_SMTP_*`
+constant defined in `wp-config.php` applies network-wide to all sites in the multisite network.
+
+Database settings remain site-specific because they are stored using normal WordPress options. This means each site can
+have its own SMTP settings in the database unless a matching `ACTRA_SMTP_*` constant is defined.
+
+If you need different SMTP settings for each site in a multisite network, configure them through each site's settings
+screen and avoid defining global `ACTRA_SMTP_*` constants.
+
 ### Configuration priority
 
 For each SMTP setting, the final value is resolved in this order:

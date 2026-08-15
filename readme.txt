@@ -45,6 +45,13 @@ Yes. For local environments that do not require SMTP authentication, such as som
 define('ACTRA_SMTP_USERNAME', '');
 define('ACTRA_SMTP_PASSWORD', '');
 
+= How do wp-config.php constants work in WordPress multisite? =
+In WordPress multisite installations, all sites share the same wp-config.php file. Any ACTRA_SMTP_* constant defined there applies network-wide to all sites in the multisite network.
+
+Database settings remain site-specific. This means each site can have its own SMTP settings in the database unless a matching ACTRA_SMTP_* constant is defined.
+
+If you need different SMTP settings for each site, configure them through each site's settings screen and avoid defining global ACTRA_SMTP_* constants.
+
 = Is the SMTP password displayed in the WordPress admin area? =
 No. The saved SMTP password is never displayed in the settings screen. If a password exists in the database, the field remains empty and can be left unchanged.
 
