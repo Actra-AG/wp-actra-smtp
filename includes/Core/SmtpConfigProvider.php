@@ -82,7 +82,7 @@ class SmtpConfigProvider
     public function get_port(): int
     {
         if (SmtpConfigProvider::has_constant_for_option(option_name: 'actra-smtp_port')) {
-            return absint(maybe: $this->get_constant_value(option_name: 'actra-smtp_port'));
+            return absint($this->get_constant_value(option_name: 'actra-smtp_port'));
         }
 
         return (int)get_option(option: 'actra-smtp_port', default_value: 587);

@@ -245,7 +245,7 @@ class Settings
       return (int)get_option(option: Settings::PORT_OPTION, default_value: 587);
     }
 
-    return absint(maybe: $value);
+    return absint($value);
   }
 
   public function sanitize_tls($value): string
