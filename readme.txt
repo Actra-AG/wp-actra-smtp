@@ -2,9 +2,9 @@
 Contributors: jayq1982
 Tags: smtp, mail, email, phpmailer, delivery
 Requires at least: 6.3
-Tested up to: 7.0
+Tested up to: 7.0.4
 Requires PHP: 8.0
-Stable tag: 1.0.5
+Stable tag: 1.0.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/GPL-2.0.html
 
@@ -33,6 +33,9 @@ You should only have one SMTP plugin active at a time to avoid conflicts.
 1. The Actra SMTP settings page with smart defaults and clear authentication hints.
 
 == Changelog ==
+= 1.0.6 =
+* Update: Plugin assets (banner and icons) added
+* Tested up to WordPress 7.0.4
 
 = 1.0.5 =
 * Revert custom password sanitization to ensure valid passwords remain unchanged.
