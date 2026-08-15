@@ -4,7 +4,7 @@ Tags: smtp, mail, email, phpmailer, delivery
 Requires at least: 6.3
 Tested up to: 7.0.4
 Requires PHP: 8.0
-Stable tag: 1.0.6
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/GPL-2.0.html
 
@@ -25,6 +25,23 @@ Actra SMTP is designed for simplicity and performance. It uses the native PHPMai
 = Does this plugin support Gmail/Outlook? =
 Yes, as long as you provide the correct SMTP host and credentials.
 
+= Can I store the SMTP password in wp-config.php instead of the database? =
+Yes. Define the ACTRA_SMTP_PASSWORD constant in wp-config.php:
+
+define('ACTRA_SMTP_PASSWORD', 'your-smtp-password');
+
+When this constant is defined, it takes priority over the password stored in the database. The password field in the plugin settings screen is disabled and cannot be changed there.
+
+For local environments that do not require an SMTP password, you can intentionally define an empty password:
+
+define('ACTRA_SMTP_PASSWORD', '');
+
+= Is the SMTP password displayed in the WordPress admin area? =
+No. The saved SMTP password is never displayed in the settings screen. If a password exists in the database, the field remains empty and can be left unchanged.
+
+= What happens to passwords saved before this update? =
+Existing plaintext passwords remain supported for backwards compatibility. When a new password is saved through the settings screen, it is stored encrypted in the WordPress database.
+
 = Is it compatible with other mail plugins? =
 You should only have one SMTP plugin active at a time to avoid conflicts.
 
@@ -33,6 +50,14 @@ You should only have one SMTP plugin active at a time to avoid conflicts.
 1. The Actra SMTP settings page with smart defaults and clear authentication hints.
 
 == Changelog ==
+
+= 1.1.0 =
+* Security: Encrypt SMTP passwords stored in the WordPress database.
+* Security: Do not display the saved SMTP password in the settings screen.
+* New: Allow defining the SMTP password via ACTRA_SMTP_PASSWORD in wp-config.php.
+* New: Support intentionally empty wp-config.php passwords for local environments.
+* Compatibility: Keep support for existing plaintext database passwords.
+
 = 1.0.6 =
 * Update: Plugin assets (banner and icons) added
 * Tested up to WordPress 7.0.4
