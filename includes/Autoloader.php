@@ -7,8 +7,8 @@ declare(strict_types=1);
 
 namespace Actra\Smtp;
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+if (!defined(constant_name: 'ABSPATH')) {
+    exit;
 }
 
 /**

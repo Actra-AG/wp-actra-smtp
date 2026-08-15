@@ -7,8 +7,8 @@ declare(strict_types=1);
 
 namespace Actra\Smtp\Core;
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+if (!defined(constant_name: 'ABSPATH')) {
+    exit;
 }
 
 use Actra\Smtp\Admin\Settings;
@@ -16,24 +16,29 @@ use Actra\Smtp\Admin\Settings;
 /**
  * Main Plugin Controller.
  */
-class Plugin {
+class Plugin
+{
 
-	protected static $instance = null;
+    protected static $instance = null;
 
-	public static function instance(): Plugin {
-		if ( null === Plugin::$instance ) {
-			Plugin::$instance = new Plugin();
-		}
-		return Plugin::$instance;
-	}
+    public static function instance(): Plugin
+    {
+        if (null === Plugin::$instance) {
+            Plugin::$instance = new Plugin();
+        }
+        return Plugin::$instance;
+    }
 
-	protected function __construct() {}
+    protected function __construct()
+    {
+    }
 
-	public function run(): void {
-		if ( is_admin() ) {
-			new Settings();
-		}
-		
-		new Mailer();
-	}
+    public function run(): void
+    {
+        if (is_admin()) {
+            new Settings();
+        }
+
+        new Mailer();
+    }
 }

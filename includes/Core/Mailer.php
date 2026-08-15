@@ -7,37 +7,44 @@ declare(strict_types=1);
 
 namespace Actra\Smtp\Core;
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+if (!defined(constant_name: 'ABSPATH')) {
+    exit;
 }
 
 /**
  * Handles the SMTP mailing logic.
  */
-class Mailer {
+class Mailer
+{
+    private SmtpConfigProvider $config_provider;
 
-	public function __construct() {
-		add_action( hook_name: 'phpmailer_init', callback: [ $this, 'configure_phpmailer' ] );
-		add_action( hook_name: 'wp_mail_failed', callback: [ $this, 'log_errors' ] );
-	}
+    public function __construct()
+    {
+        $this->config_provider = new SmtpConfigProvider();
 
-	public function configure_phpmailer( $phpmailer ): void {
-		$username = get_option( option: 'actra-smtp_username' );
+        add_action(hook_name: 'phpmailer_init', callback: [$this, 'configure_phpmailer']);
+        add_action(hook_name: 'wp_mail_failed', callback: [$this, 'log_errors']);
+    }
 
-		$phpmailer->isSMTP();
-		$phpmailer->Host       = get_option( option: 'actra-smtp_hostname' );
-		$phpmailer->SMTPAuth   = ! empty( $username );
-		$phpmailer->Username   = $username;
-		$phpmailer->Password   = get_option( option: 'actra-smtp_password' );
-		$phpmailer->Port       = (int) get_option( option: 'actra-smtp_port', default_value: 587 );
-		$phpmailer->SMTPSecure = 'yes' === get_option( option: 'actra-smtp_tls', default_value: 'yes' ) ? 'tls' : '';
-		$phpmailer->From       = get_option( option: 'actra-smtp_sender_email' );
-		$phpmailer->FromName   = get_option( option: 'actra-smtp_sender_email' );
-	}
+    public function configure_phpmailer($phpmailer): void
+    {
+        $username = $this->config_provider->get_username();
 
-	public function log_errors( $error ): void {
-		if ( defined( constant_name: 'WP_DEBUG' ) && WP_DEBUG ) {
-			error_log( message: 'Actra SMTP Error: ' . $error->get_error_message() );
-		}
-	}
+        $phpmailer->isSMTP();
+        $phpmailer->Host = $this->config_provider->get_host();
+        $phpmailer->SMTPAuth = '' !== $username;
+        $phpmailer->Username = $username;
+        $phpmailer->Password = $this->config_provider->get_password();
+        $phpmailer->Port = $this->config_provider->get_port();
+        $phpmailer->SMTPSecure = $this->config_provider->is_tls_enabled() ? 'tls' : '';
+        $phpmailer->From = $this->config_provider->get_sender_email();
+        $phpmailer->FromName = $this->config_provider->get_sender_email();
+    }
+
+    public function log_errors($error): void
+    {
+        if (defined(constant_name: 'WP_DEBUG') && WP_DEBUG) {
+            error_log(message: 'Actra SMTP Error: ' . $error->get_error_message());
+        }
+    }
 }
