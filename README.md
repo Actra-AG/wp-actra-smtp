@@ -40,41 +40,56 @@ The plugin provides fields for:
 - **SMTP Port**: Usually `587` (TLS) or `465` (SSL).
 - **SMTP-TLS**: Toggle between Yes (TLS) or No.
 
-### Password storage
+### Database configuration
 
-Actra SMTP does not display the saved SMTP password in the WordPress admin area.
+By default, Actra SMTP stores its settings in the WordPress database.
 
-When a password is saved through **Settings > Actra SMTP**, it is stored encrypted in the WordPress database. Existing
-plaintext passwords from older versions remain supported and are used as a backwards-compatible fallback.
+The saved SMTP password is never displayed in the WordPress admin area. When a password is saved through **Settings >
+Actra SMTP**, it is stored encrypted in the database. Existing plaintext passwords from older versions remain supported
+and are used as a backwards-compatible fallback.
 
-To avoid storing the SMTP password in the database, you can define it in `wp-config.php` instead:
+### wp-config.php configuration
+
+SMTP settings can also be defined in `wp-config.php` using constants. Constants take priority over values stored in the
+database. This is useful for local development, deployment automation, staging/production environments, and keeping
+secrets out of the database.
+
+You may define individual constants, but using the full set is recommended to avoid mixed configuration sources.
 
 ```php
+define('ACTRA_SMTP_FROM_EMAIL', 'noreply@example.com');
+define('ACTRA_SMTP_HOST', 'smtp.example.com');
+define('ACTRA_SMTP_USERNAME', 'user@example.com');
 define('ACTRA_SMTP_PASSWORD', 'your-smtp-password');
+define('ACTRA_SMTP_PORT', 587);
+define('ACTRA_SMTP_TLS', true);
 ```
 
-Place the constant above this line in `wp-config.php`:
+Place these constants above this line in `wp-config.php`:
 
 ```php
 /* That's all, stop editing! Happy publishing. */
 ```
 
-When `ACTRA_SMTP_PASSWORD` is defined, it takes priority over the database value and the password field in the plugin
-settings screen cannot be changed.
+When a constant is defined, the matching field in the plugin settings screen is disabled and cannot be changed there.
 
-For local environments that do not require an SMTP password, you may intentionally define an empty password:
+For local environments that do not require authentication, such as some DDEV or Mailpit setups, you may intentionally
+define empty credentials:
 
 ```php
+define('ACTRA_SMTP_USERNAME', '');
 define('ACTRA_SMTP_PASSWORD', '');
 ```
 
-### Password priority
+### Configuration priority
 
-The final SMTP password is resolved in this order:
+For each SMTP setting, the final value is resolved in this order:
 
-1. `ACTRA_SMTP_PASSWORD` from `wp-config.php`, if the constant is defined.
-2. The encrypted password stored in the WordPress database.
-3. A legacy plaintext database password, for backwards compatibility.
+1. The matching constant from `wp-config.php`, if defined.
+2. The value stored in the WordPress database.
+
+For the SMTP password, database values are decrypted automatically. Existing plaintext database passwords are still
+supported for backwards compatibility.
 
 ## Developer Notes
 

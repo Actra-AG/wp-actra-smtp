@@ -16,28 +16,29 @@ if (!defined(constant_name: 'ABSPATH')) {
  */
 class Mailer
 {
-    private SmtpPasswordProvider $password_provider;
+    private SmtpConfigProvider $config_provider;
 
     public function __construct()
     {
-        $this->password_provider = new SmtpPasswordProvider();
+        $this->config_provider = new SmtpConfigProvider();
+
         add_action(hook_name: 'phpmailer_init', callback: [$this, 'configure_phpmailer']);
         add_action(hook_name: 'wp_mail_failed', callback: [$this, 'log_errors']);
     }
 
     public function configure_phpmailer($phpmailer): void
     {
-        $username = get_option(option: 'actra-smtp_username');
+        $username = $this->config_provider->get_username();
 
         $phpmailer->isSMTP();
-        $phpmailer->Host = get_option(option: 'actra-smtp_hostname');
-        $phpmailer->SMTPAuth = !empty($username);
+        $phpmailer->Host = $this->config_provider->get_host();
+        $phpmailer->SMTPAuth = '' !== $username;
         $phpmailer->Username = $username;
-        $phpmailer->Password = $this->password_provider->get_password();
-        $phpmailer->Port = (int)get_option(option: 'actra-smtp_port', default_value: 587);
-        $phpmailer->SMTPSecure = 'yes' === get_option(option: 'actra-smtp_tls', default_value: 'yes') ? 'tls' : '';
-        $phpmailer->From = get_option(option: 'actra-smtp_sender_email');
-        $phpmailer->FromName = get_option(option: 'actra-smtp_sender_email');
+        $phpmailer->Password = $this->config_provider->get_password();
+        $phpmailer->Port = $this->config_provider->get_port();
+        $phpmailer->SMTPSecure = $this->config_provider->is_tls_enabled() ? 'tls' : '';
+        $phpmailer->From = $this->config_provider->get_sender_email();
+        $phpmailer->FromName = $this->config_provider->get_sender_email();
     }
 
     public function log_errors($error): void

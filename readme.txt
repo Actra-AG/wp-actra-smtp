@@ -25,15 +25,24 @@ Actra SMTP is designed for simplicity and performance. It uses the native PHPMai
 = Does this plugin support Gmail/Outlook? =
 Yes, as long as you provide the correct SMTP host and credentials.
 
-= Can I store the SMTP password in wp-config.php instead of the database? =
-Yes. Define the ACTRA_SMTP_PASSWORD constant in wp-config.php:
+= Can I store SMTP settings in wp-config.php instead of the database? =
+Yes. SMTP settings can be defined in wp-config.php using constants. Constants take priority over values stored in the database.
 
+Available constants:
+
+define('ACTRA_SMTP_FROM_EMAIL', 'noreply@example.com');
+define('ACTRA_SMTP_HOST', 'smtp.example.com');
+define('ACTRA_SMTP_USERNAME', 'user@example.com');
 define('ACTRA_SMTP_PASSWORD', 'your-smtp-password');
+define('ACTRA_SMTP_PORT', 587);
+define('ACTRA_SMTP_TLS', true);
 
-When this constant is defined, it takes priority over the password stored in the database. The password field in the plugin settings screen is disabled and cannot be changed there.
+You may define individual constants, but using the full set is recommended to avoid mixed configuration sources. When a constant is defined, the matching field in the plugin settings screen is disabled and cannot be changed there.
 
-For local environments that do not require an SMTP password, you can intentionally define an empty password:
+= Can I define an empty SMTP password in wp-config.php? =
+Yes. For local environments that do not require SMTP authentication, such as some DDEV or Mailpit setups, you can intentionally define empty credentials:
 
+define('ACTRA_SMTP_USERNAME', '');
 define('ACTRA_SMTP_PASSWORD', '');
 
 = Is the SMTP password displayed in the WordPress admin area? =
@@ -54,8 +63,9 @@ You should only have one SMTP plugin active at a time to avoid conflicts.
 = 1.1.0 =
 * Security: Encrypt SMTP passwords stored in the WordPress database.
 * Security: Do not display the saved SMTP password in the settings screen.
-* New: Allow defining the SMTP password via ACTRA_SMTP_PASSWORD in wp-config.php.
-* New: Support intentionally empty wp-config.php passwords for local environments.
+* New: Allow defining SMTP settings via wp-config.php constants.
+* New: Allow individual wp-config.php constants while recommending the full set.
+* New: Support intentionally empty wp-config.php credentials for local environments.
 * Compatibility: Keep support for existing plaintext database passwords.
 
 = 1.0.6 =
